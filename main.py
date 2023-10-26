@@ -78,11 +78,66 @@ def isFull(board, symbol_1, symbol_2):
       if winner == True:
         print("It's a tie!")
   
+    winner = isWinner(board, symbol_1, symbol_2, count)
+    count += 1
   if winner == False:
-    print("Game over!")
+    print("Game over.")
 
   report(count, winner, symbol_1, symbol_2)
 
 def outOfBoard(row, column):
+  print("You can't place your symbol outside the board.")
+
+def printPretty(board):
+  print(board[0][0] + "|" + board[0][1] + "|" + board[0][2])
+  print("-+-+-")
+  print(board[1][0] + "|" + board[1][1] + "|" + board[1][2])
+  print("-+-+-")
+  print(board[2][0] + "|" + board[2][1] + "|" + board[2][2])
+  return board
+
+def isWinner(board, symbol_1, symbol_2, count):
+  winner = True
+  for row in range (0, 3):
+    if (board[row][0] == board[row][1] == board[row][2] == symbol_1):
+      winner = False
+      print("Player" + symbol_1 + "wins!")
+    elif (board[row][0] == board[row][1] == board[row][2] == symbol_2):
+      winner = False
+      print("Player" + symbol_2 + "wins!")
+  for column in range (0, 3):
+    if (board[0][column] == board[1][column] == board[2][column] == symbol_1):
+      winner = False
+      print("Player" + symbol_1 + "wins!")
+    elif (board[0][column] == board[1][column] == board[2][column] == symbol_2):
+      winner = False
+      print("Player" + symbol_2 + "wins!")
+
+  if (board[0][0] == board[1][1] == board[2][2] == symbol_1):
+    winner = False
+    print("Player" + symbol_1 + "wins!")
+  elif (board[0][0] == board[1][1] == board[2][2] == symbol_2):
+    winner = False
+    print("Player" + symbol_2 + "wins!")
+  elif (board[0][2] == board[1][1] == board[2][0] == symbol_1):
+    winner = False
+    print("Player" + symbol_1 + "wins!")
+  elif (board[0][2] == board[1][1] == board[2][0] == symbol_2):
+    winner = False
+    print("Player" + symbol_2 + "wins!")
+  return winner
+
+def illegal(board, row, column, symbol_1, symbol_2):
+  print("This spot is already taken.")
+
+def report(count, winner, symbol_1, symbol_2):
+  if winner == True:
+    print("It's a tie!")
+  elif count % 2 == 0:
+    print("Player" + symbol_1 + "wins!")
+  elif count % 2 == 1:
+    print("Player" + symbol_2 + "wins!")
+
+main()
 
     
