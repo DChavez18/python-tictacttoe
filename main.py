@@ -22,16 +22,17 @@ def create_grid():
   return board
 
 def sym():
-  symbol_1 = input("Player 1, choose your symbol (X or O): ")
-  if symbol_1 == "X":
-    symbol_2 = "O"
-    print("Player 2, your symbol is O.")
-  else:
-    symbol_2 = "X"
-    print("Player 2, your symbol is X.")
-  input("Press enter to continue...")
-  print("\n")
-  return symbol_1, symbol_2
+    while True:
+        symbol_1 = input("Player 1, choose your symbol (X or O): ").upper()
+        if symbol_1 == "X" or symbol_1 == "O":
+            break
+        else:
+            print("Invalid choice. Please select 'X' or 'O'.")
+
+    symbol_2 = "X" if symbol_1 == "O" else "O"
+    print(f"Player 2, your symbol is {symbol_2}.")
+    input("Press enter to continue...\n")
+    return symbol_1, symbol_2
 
 def startGame(board, symbol_1, symbol_2, count):
   if count % 2 == 0:
