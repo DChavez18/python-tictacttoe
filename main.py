@@ -1,9 +1,24 @@
 def main():
   introduction = intro()
+  game_mode = selectGameMode()
   board = create_grid()
   pretty = printPretty(board)
   symbol_1, symbol_2 = sym()
-  full = isFull(board, symbol_1, symbol_2)
+
+  # if game_mode == "PvC":
+  #   symbol_2 = "CPU"
+
+  full = isFull(board, symbol_1, symbol_2, game_mode)
+
+def selectGameMode():
+    while True:
+        mode = input("Select the game mode (1 for Player vs. Player, 2 for Player vs. CPU): ")
+        if mode == "1":
+            return "PvP"
+        elif mode == "2":
+            return "PvC"
+        else:
+            print("Invalid choice. Please select '1' for Player vs. Player or '2' for Player vs. CPU.")
 
 def intro():
   print("Welcome to Tic Tac Toe!")
@@ -15,6 +30,16 @@ def intro():
   print("\n")
   input("Press enter to continue...")
   print("\n")
+
+  # def selectGameMode():
+  #   while True:
+  #       mode = input("Select the game mode (1 for Player vs. Player, 2 for Player vs. CPU): ")
+  #       if mode == "1":
+  #           return "PvP"
+  #       elif mode == "2":
+  #           return "PvC"
+  #       else:
+  #           print("Invalid choice. Please select '1' for Player vs. Player or '2' for Player vs. CPU.")
 
 def create_grid():
   print("This is the classic grid:")
@@ -34,7 +59,7 @@ def sym():
     input("Press enter to continue...\n")
     return symbol_1, symbol_2
 
-def startGame(board, symbol_1, symbol_2, count):
+def startGame(board, symbol_1, symbol_2, count, game_mode):
   if count % 2 == 0:
     player = symbol_1
   elif count % 2 == 1:
@@ -66,36 +91,42 @@ def startGame(board, symbol_1, symbol_2, count):
 
   return board
 
-def isFull(board, symbol_1, symbol_2):
+def isFull(board, symbol_1, symbol_2, game_mode):
   count = 1
   winner = True
 
-  while count < 10 and winner == True:
-    gaming = startGame(board, symbol_1, symbol_2, count)
-    pretty = printPretty(board)
+  while count < 10 and winner:
+        gaming = startGame(board, symbol_1, symbol_2, count, game_mode)
+        pretty = printPretty(board)
 
-    if count == 9:
+  if count == 9:
       print("Full board. Game over.")
       if winner == True:
         print("It's a tie!")
-  
-    winner = isWinner(board, symbol_1, symbol_2, count)
-    count += 1
-  if winner == False:
-    print("Game over.")
 
-  report(count, winner, symbol_1, symbol_2)
+      if game_mode == "PvP":
+              winner = isWinner(board, symbol_1, symbol_2, count)
+      elif game_mode == "PvC":
+              winner = isWinner(board, symbol_1, "CPU", count)
+          
+      count += 1
+  
+  if winner:
+      print("Game over.")
+
+  report(count, winner, symbol_1, symbol_2, game)
 
 def outOfBoard(row, column):
   print("You can't place your symbol outside the board.")
 
 def printPretty(board):
-  print(board[0][0] + "|" + board[0][1] + "|" + board[0][2])
-  print("-+-+-")
-  print(board[1][0] + "|" + board[1][1] + "|" + board[1][2])
-  print("-+-+-")
-  print(board[2][0] + "|" + board[2][1] + "|" + board[2][2])
-  return board
+    print("   0   1   2")
+    print("0  " + board[0][0] + " | " + board[0][1] + " | " + board[0][2])
+    print("  ---|---|---")
+    print("1  " + board[1][0] + " | " + board[1][1] + " | " + board[1][2])
+    print("  ---|---|---")
+    print("2  " + board[2][0] + " | " + board[2][1] + " | " + board[2][2])
+    return board
 
 def isWinner(board, symbol_1, symbol_2, count):
   winner = True
